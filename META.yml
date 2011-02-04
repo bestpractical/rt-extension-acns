@@ -17,6 +17,7 @@ no_index:
   directory:
     - etc
     - inc
+    - t
 requires:
   Parse::ACNS: 0
   perl: 5.8.3
