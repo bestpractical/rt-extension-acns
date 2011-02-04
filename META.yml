@@ -1,5 +1,5 @@
 ---
-abstract: 'parse ACNS messages and extract info'
+abstract: 'parse ACNS messages and extract info into custom fields'
 author:
   - 'Ruslan Zakirov <ruz@bestpractical.com>'
 build_requires:
