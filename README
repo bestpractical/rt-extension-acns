@@ -1,7 +1,37 @@
 NAME
-    RT::Extension::ACNS - parse ACNS messages and extract info
+    RT::Extension::ACNS - parse ACNS messages and extract info into custom
+    fields
 
 DESCRIPTION
+    ACNS stands for Automated Copyright Notice System. It's an open source,
+    royalty free system that universities, ISP's, or anyone that handles
+    large volumes of copyright notices can implement on their network to
+    increase the efficiency and reduce the costs of responding to the
+    notices... See "http://mpto.unistudios.com/xml/" for more details.
+
+    This extension for RT is a configurable scrip that parses ACNS XML from
+    incomming messages and stores it in custom fields.
+
+INSTALLATION
+        perl Makefile.PL
+        make
+        make install
+        make initdb
+
+    In RT_SiteConfig.pm:
+
+        Set(@Plugins, qw(
+            RT::Extension::ACNS
+            ... other plugins ...
+        ));
+        Set( %ACNS,
+            ... configuration ...
+        );
+
+CONFIGURATION
+    The scrip is configured thorugh %ACNS config option that described in
+    details in etc/RT_ACNSConfig.pm.
+
 AUTHOR
     Ruslan Zakirov <ruz@bestpractical.com>
 
