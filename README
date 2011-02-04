@@ -1,0 +1,10 @@
+NAME
+    RT::Extension::ACNS - parse ACNS messages and extract info
+
+DESCRIPTION
+AUTHOR
+    Ruslan Zakirov <ruz@bestpractical.com>
+
+LICENSE
+    Under the same terms as perl itself.
+
