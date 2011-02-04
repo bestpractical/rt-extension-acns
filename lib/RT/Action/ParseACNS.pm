@@ -1,7 +1,7 @@
 use strict;
 use warnings;
 
-package RT::Condition::ParseACNS;
+package RT::Action::ParseACNS;
 use base 'RT::Action';
 
 use XML::LibXML;
@@ -63,7 +63,7 @@ sub UpdateCustomField {
             );
             $RT::Logger->error("Couldn't set CF: $msg") unless $status;
         }
-        else {
+        elsif ( $ticket->CustomFieldValues->First ) {
             my ($status, $msg) = $ticket->DeleteCustomFieldValue(
                 Field => $cf,
                 Value => $ticket->FirstCustomFieldValue( $cf ),
@@ -73,7 +73,7 @@ sub UpdateCustomField {
         }
     }
     else {
-        unless ( $value  ) {
+        unless ( $value ) {
             foreach my $value ( @{ $ticket->CustomFieldValues($cf)->ItemsArrayRef } ) {
                 my ($status, $msg) = $ticket->DeleteCustomFieldValue(
                     Field   => $cf, ValueId => $value->id,
@@ -123,7 +123,9 @@ sub MapDataOverCFs {
     my %config = RT->Config->Get('ACNS');
 
     my %res;
-    %res = %{ $config{'Defaults'} };
+    %res = %{ $config{'Defaults'} } if $config{'Defaults'};
+    return \%res unless $config{'Map'};
+
     while ( my ($cf, $path) = each %{ $config{'Map'} } ) {
         my @tmp = grep defined && length, $self->ResolveMapEntry(
             Data => $data,
@@ -171,7 +173,7 @@ sub ResolveMapEntry {
                 foreach my $data_point ( @{$data} ) {
                     push @res, $self->ResolveMapEntry(
                         Data => $data_point,
-                        Path => [ splice @path ],
+                        Path => [ @path ],
                         Done => \@done,
                     );
                 }
