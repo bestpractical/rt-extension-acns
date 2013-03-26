@@ -10,13 +10,29 @@ use Parse::ACNS;
 sub Prepare {
     my $self = shift;
 
-    my $content = $self->TransactionObj->Content;
-    $content =~ s/^.*Start ACNS XML\n//s
-        or $RT::Logger->warn("No 'Start ACNS XML' marker");
-    $content =~ s/- -+End ACNS XML.*$//s
-        or $RT::Logger->warn("No 'End ACNS XML' marker");
+    my $xml;
 
-    my $xml = XML::LibXML->new->parse_string( $content );
+    my $txn = $self->TransactionObj;
+
+    my $content = $txn->Content;
+    if ( $content =~ s/^.*Start ACNS XML\n//s ) {
+        $content =~ s/- -+End ACNS XML.*$//s;
+        $xml = XML::LibXML->new->parse_string( $content );
+    } else {
+        my $attachments = $txn->Attachments;
+        while ( my $attach = $attachments->Next ) {
+            next unless ($attach->Filename||'') =~ /\.xml$/;
+            next unless ($attach->Content||'') =~ /Infringement/i;
+
+            $xml = XML::LibXML->new->parse_string( $attach->Content );
+            last;
+        }
+    }
+    unless ($xml) {
+        $RT::Logger->error("Failed to find ACNS XML");
+        return 1;
+    }
+
     my $data = Parse::ACNS->new->parse( $xml );
     $self->{'ACNS'} = $self->MapDataOverCFs( $data );
     return 1;
