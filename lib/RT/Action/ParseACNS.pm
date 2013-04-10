@@ -16,7 +16,7 @@ sub Prepare {
 
     my $content = $txn->Content;
     if ( $content =~ s/^.*Start ACNS XML\n//s ) {
-        $content =~ s/- -+End ACNS XML.*$//s;
+        $content =~ s/(- )?-+End ACNS XML.*$//s;
         $xml = XML::LibXML->new->parse_string( $content );
     } else {
         my $attachments = $txn->Attachments;
