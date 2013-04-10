@@ -1,4 +1,3 @@
-.gitignore
 Changes
 etc/initialdata
 etc/RT_ACNSConfig.pm
@@ -23,3 +22,6 @@ MANIFEST			This list of files
 META.yml
 README
 t/basics.t
+t/data/sample1.eml
+t/data/sample2.eml
+t/samples.t
