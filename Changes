@@ -1,3 +1,7 @@
+0.04 2013-04-25
+
+    * add support for functions in the map
+
 0.03 2013-04-11
 
     * extract from a verified emails (gpg strips some bits)
