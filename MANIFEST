@@ -22,6 +22,7 @@ MANIFEST			This list of files
 META.yml
 README
 t/basics.t
+t/callbacks.t
 t/data/sample1.eml
 t/data/sample2.eml
 t/samples.t

@@ -17,7 +17,8 @@ with ( custom field => value ) pairs. For example:
 
 Map is hash with (custom field => path) pairs, where path
 is an array reference with node names from ACNS XML. More
-on paths below.
+on paths below. Path can be a function, more on this
+after simple solution.
 
     Set( %ACNS => 
         Defaults => { ... },
@@ -67,6 +68,26 @@ name with attribute name to store text. For example:
     );
 
 =back
+
+As mentioned path can be a function that generates value(s), for example the following
+code combines optional elements that define type of the source into one value:
+
+    Set( %ACNS =>
+        Map => {
+            SourceType => sub {
+                my %args = @_;
+                return () unless exists $args{'Data'}{'Source'};
+
+                my $source = $args{'Data'}{'Source'};
+                my @res = (
+                    $source->{'Type'}, @{ $source->{'SubType'} }{'BaseType', 'Protocol'}
+                );
+                my %seen;
+                return join ' ', grep !$seen{$_}++, map lc $_,
+                    grep defined && length, @res;
+            },
+        },
+    );
 
 =cut
 

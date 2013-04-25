@@ -143,12 +143,20 @@ sub MapDataOverCFs {
     return \%res unless $config{'Map'};
 
     while ( my ($cf, $path) = each %{ $config{'Map'} } ) {
-        my @tmp = grep defined && length, $self->ResolveMapEntry(
-            Data => $data,
-            Path => $path,
-            CustomField => $cf,
-        );
-        $res{ $cf } = @tmp > 1 ? [ @tmp ] : @tmp? $tmp[0] : undef;
+        my @res;
+        if ( ref($path) eq 'CODE' ) {
+            @res = grep defined && length, $path->(
+                Data => $data,
+                CustomField => $cf,
+            );
+        } else {
+            @res = grep defined && length, $self->ResolveMapEntry(
+                Data => $data,
+                Path => $path,
+                CustomField => $cf,
+            );
+        }
+        $res{ $cf } = @res > 1 ? [ @res ] : @res? $res[0] : undef;
     }
     return \%res;
 }
