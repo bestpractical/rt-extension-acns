@@ -1,3 +1,11 @@
+0.03 2013-04-11
+
+    * extract from a verified emails (gpg strips some bits)
+
+0.02 2013-03-26
+
+    * extract from XML in an attachment
+
 0.01 2011-02-04
 
     * initial release
