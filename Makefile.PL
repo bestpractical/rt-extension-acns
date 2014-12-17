@@ -1,7 +1,8 @@
 use inc::Module::Install;
-RTx('RT-Extension-ACNS');
-all_from 'lib/RT/Extension/ACNS.pm';
-readme_from 'lib/RT/Extension/ACNS.pm';
+
+RTx 'RT-Extension-ACNS';
+
+repository 'https://github.com/bestpractical/rt-extension-acns' ;
 
 requires 'Parse::ACNS';
 
@@ -13,4 +14,5 @@ substitute( {
     'lib/RT/Extension/ACNS/Test.pm',
 );
 
+sign();
 WriteAll();
